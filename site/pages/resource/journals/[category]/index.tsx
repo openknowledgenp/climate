@@ -9,7 +9,7 @@ import { getJournalsPathsByCategory } from '../../../../lib/github_rest'
 
 
 
-const octokit = new Octokit({ auth: `${process.env.NEXT_PUBLIC_PAT}` })
+const octokit = new Octokit(process.env.NEXT_PUBLIC_PAT ? { auth: process.env.NEXT_PUBLIC_PAT } : {})
 
 
 export async function getStaticPaths() {

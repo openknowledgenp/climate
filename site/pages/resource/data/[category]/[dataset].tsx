@@ -9,7 +9,7 @@ import { fileURLToPath } from 'url'
 import { getDatasetsPaths } from '../../../../lib/github_rest'
 import ResourcesNav from '../../../../components/ResourceNav'
 
-const octokit = new Octokit({ auth: `${process.env.NEXT_PUBLIC_PAT}` })
+const octokit = new Octokit(process.env.NEXT_PUBLIC_PAT ? { auth: process.env.NEXT_PUBLIC_PAT } : {})
 
 export async function getStaticPaths() {
   const stuffs = await getDatasetsPaths()

@@ -1,45 +1,53 @@
-import Link from 'next/link'
 import Head from 'next/head'
-
+import Link from 'next/link'
 import Nav from './Nav'
 
 export default function Layout({ children, title = 'Home' }: any) {
-    return (
-        <>
-            <Head>
-                <title>{title}{title && ' - '}Climate Knowledge Portal</title>
-                <link rel="icon" href="/favicon.ico" />
-                <meta charSet="utf-8" />
-                <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-                <link rel="preconnect" href="https://fonts.googleapis.com" />
-                <link rel="preconnect" href="https://fonts.gstatic.com" />
-                {/* <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans&display=swap" rel="stylesheet" /> */}
-                <link rel="preload" href="/fonts/Restora/Restora.ttf" as="font" />
-                <link rel="preload" href="/fonts/Restora/RestoraBold.ttf" as="font" />
-                <link rel="preload" href="/fonts/Restora/RestoraExtraLight.otf" as="font" />
-            </Head>
-            <Nav />
-            <main>
-                {children}
-            </main>
-            <div className='border-t-2'></div>
-            <footer className="flex items-center  w-full h-24  max-w-7xl mx-auto">
-                <p className='ml-6'>
-                    Made by
-                </p>
-                <Link href='https://oknp.org/' passHref>
-                    <a
-                        className="flex items-center justify-center ml-2 underline"
-                        href="/oknp.org"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        Open Knowledge Nepal</a>
-                </Link>
+  return (
+    <>
+      <Head>
+        <title>{title ? `${title} — Climate Knowledge Portal Nepal` : 'Climate Knowledge Portal Nepal'}</title>
+        <link rel="icon" href="/favicon.ico" />
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <meta name="description" content="Open climate data and research for Nepal — centralising datasets, journals, and resources on climate change." />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700&family=DM+Sans:wght@400;500&display=swap"
+          rel="stylesheet"
+        />
+      </Head>
 
-                <p className='ml-2'>- “Liberating Knowledge for Opportunity”</p>
+      <Nav />
+      <main>{children}</main>
 
-            </footer>
-        </>
-    )
+      <footer className="ckp-footer">
+        <div className="ckp-footer-row">
+          <div>
+            <p className="ckp-footer-brand">Open Knowledge Nepal</p>
+            <p className="ckp-footer-tag">&ldquo;Liberating knowledge for opportunity&rdquo;</p>
+          </div>
+          <ul className="ckp-footer-links">
+            <li>
+              <a href="https://oknp.org/" target="_blank" rel="noopener noreferrer">
+                oknp.org
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/okfnepal/climatedata" target="_blank" rel="noopener noreferrer">
+                GitHub
+              </a>
+            </li>
+            <li>
+              <Link href="/contribute"><a>Contribute</a></Link>
+            </li>
+          </ul>
+          <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.25)' }}>
+            Nepal climate data &mdash; open and accessible
+          </p>
+        </div>
+      </footer>
+    </>
+  )
 }

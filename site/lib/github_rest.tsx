@@ -1,6 +1,6 @@
 import { Octokit } from '@octokit/core'
 
-const octokit = new Octokit({ auth: `${process.env.NEXT_PUBLIC_PAT}` })
+const octokit = new Octokit(process.env.NEXT_PUBLIC_PAT ? { auth: process.env.NEXT_PUBLIC_PAT } : {})
 
 
 export async function getDatasetsPaths() {
