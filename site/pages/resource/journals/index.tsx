@@ -5,7 +5,7 @@ import Layout from '../../../components/Layout'
 import ResourcesNav from '../../../components/ResourceNav'
 import { Octokit } from '@octokit/core'
 import { getJournalsPathsByCategory } from '../../../lib/github_rest'
-import Breadcrumbs from 'nextjs-breadcrumbs'
+import Breadcrumbs from '../../../components/Breadcrumbs'
 import { useRouter } from 'next/router'
 
 const octokit = new Octokit(process.env.NEXT_PUBLIC_PAT ? { auth: process.env.NEXT_PUBLIC_PAT } : {})

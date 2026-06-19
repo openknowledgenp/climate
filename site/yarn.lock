@@ -1927,11 +1927,6 @@ next@12.2.2:
     "@next/swc-win32-ia32-msvc" "12.2.2"
     "@next/swc-win32-x64-msvc" "12.2.2"
 
-nextjs-breadcrumbs@^1.1.9:
-  version "1.1.9"
-  resolved "https://registry.npmjs.org/nextjs-breadcrumbs/-/nextjs-breadcrumbs-1.1.9.tgz"
-  integrity sha512-kzK1bysO5dqdlsPgJ84XgAfAFKWEqlXcSWROwuR1BqST8ibcmLc3LKgak8hiO2DH2mMdd0wTR7oCkebReyBQTg==
-
 node-fetch@^2.6.7:
   version "2.6.7"
   resolved "https://registry.npmjs.org/node-fetch/-/node-fetch-2.6.7.tgz"
