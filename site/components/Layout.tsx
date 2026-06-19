@@ -11,12 +11,6 @@ export default function Layout({ children, title = 'Home' }: any) {
         <meta charSet="utf-8" />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta name="description" content="Open climate data and research for Nepal — centralising datasets, journals, and resources on climate change." />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700&family=DM+Sans:wght@400;500&display=swap"
-          rel="stylesheet"
-        />
       </Head>
 
       <Nav />
