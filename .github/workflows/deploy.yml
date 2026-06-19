@@ -16,11 +16,11 @@ jobs:
         with:
           node-version: 18.x
       - name: Installing App
-        run: cd site && npm ci
+        run: cd site && npm ci --legacy-peer-deps
       - name: Building App
         run: |
           cd site
-          npm install
+          npm install --legacy-peer-deps
           npm run build
           npm run export
           touch ./out/.nojekyll
