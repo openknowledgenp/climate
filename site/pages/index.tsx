@@ -1,42 +1,19 @@
 import type { NextPage } from 'next'
 import Link from 'next/link'
 import Layout from '../components/Layout'
-import { Octokit } from 'octokit'
 import { useEffect, useRef } from 'react'
-import { getJournalsPathsByCategory } from '../lib/github_rest'
-
-const octokit = new Octokit(process.env.NEXT_PUBLIC_PAT ? { auth: process.env.NEXT_PUBLIC_PAT } : {})
+import { getDatasetsPaths, getJournalsPathsByCategory } from '../lib/github_rest'
 
 export async function getStaticProps() {
-  async function getFetchPaths() {
-    const categories_name: any = []
-    const response = await octokit.request(`GET /repos/okfnepal/climatedata/contents/Datasets`)
-    response.data.map((item: any) => {
-      if (item.type === 'dir') {
-        categories_name.push(octokit.request(`GET /repos/okfnepal/climatedata/contents/Datasets/${item.name}?ref=master`))
-      }
-    })
-    return categories_name
-  }
-
-  const datasetPaths = await getFetchPaths()
-
-  const paths = await Promise.all(datasetPaths).then((response) => {
-    const staticPaths: any = []
-    response.map((item: any) => {
-      item.data.map((items: any) => {
-        staticPaths.push({ params: { dataset: `${items.name}`, category: items.path.split('/')[1], data: items } })
-      })
-    })
-    return staticPaths
-  }).then((data: any) => data)
-
-  const journals = await getJournalsPathsByCategory()
+  const [datasetResult, journalsResult] = await Promise.all([
+    getDatasetsPaths(),
+    getJournalsPathsByCategory(),
+  ])
 
   return {
     props: {
-      data: paths,
-      journals: journals.data,
+      data: datasetResult.paths,
+      journals: journalsResult.data,
     },
   }
 }

@@ -3,18 +3,20 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Layout from '../../../components/Layout'
 import ResourcesNav from '../../../components/ResourceNav'
-import { Octokit } from '@octokit/core'
+import { getDatasetsPaths } from '../../../lib/github_rest'
 
-
-
-
-const octokit = new Octokit(process.env.NEXT_PUBLIC_PAT ? { auth: process.env.NEXT_PUBLIC_PAT } : {})
 export async function getStaticProps() {
-    const named = ['Temperature']
-    const res = await octokit.request(`GET /repos/okfnepal/climatedata/contents/Datasets/${named}?ref=master`)
+    const allPaths = await getDatasetsPaths()
+    const temperature = allPaths.paths
+        .filter((p: any) => p.params.category === 'Temperature')
+        .map((p: any) => ({
+            name: p.params.dataset,
+            path: `Datasets/${p.params.category}/${p.params.dataset}`,
+            html_url: p.params.data.html_url,
+        }))
     return {
         props: {
-            data: res,
+            data: { data: temperature },
         },
     }
 }

@@ -3,28 +3,26 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Layout from '../../../../components/Layout'
 import ResourcesNav from '../../../../components/ResourceNav'
-import { Octokit } from '@octokit/core'
 import { getJournalsPathsByCategory } from '../../../../lib/github_rest'
-
-
-
-
-const octokit = new Octokit(process.env.NEXT_PUBLIC_PAT ? { auth: process.env.NEXT_PUBLIC_PAT } : {})
-
 
 export async function getStaticPaths() {
     const journalPaths = await getJournalsPathsByCategory()
-    return {
-        paths: journalPaths.paths,
-        fallback: 'blocking'
-    }
+    // Deduplicate to one path per category
+    const seen = new Set<string>()
+    const paths = journalPaths.paths.filter((p: any) => {
+        if (seen.has(p.params.category)) return false
+        seen.add(p.params.category)
+        return true
+    }).map((p: any) => ({ params: { category: p.params.category } }))
+    return { paths, fallback: false }
 }
 
 export async function getStaticProps({ params }: any) {
-    const res = await octokit.request(`GET /repos/okfnepal/climatedata/contents/Journals/${params.category}?ref=master`)
+    const journalPaths = await getJournalsPathsByCategory()
+    const catData = journalPaths.data.find((d: any) => d.params.category === params.category)
     return {
         props: {
-            data: res,
+            data: catData ? { data: catData.params.data.data } : { data: [] },
             query: params,
         },
     }

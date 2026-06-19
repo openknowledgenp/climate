@@ -1,30 +1,26 @@
 import type { NextPage } from 'next'
 import { useState } from 'react'
 import Link from 'next/link'
-import { Octokit } from '@octokit/core'
 import { useRouter } from 'next/router'
 import Breadcrumbs from '../../../../components/Breadcrumbs'
 import Layout from '../../../../components/Layout'
 import { getDatasetsPaths } from '../../../../lib/github_rest'
 import ResourcesNav from '../../../../components/ResourceNav'
 
-const octokit = new Octokit(process.env.NEXT_PUBLIC_PAT ? { auth: process.env.NEXT_PUBLIC_PAT } : {})
-
 export async function getStaticPaths() {
   const stuffs = await getDatasetsPaths()
   return {
     paths: stuffs.paths,
-    fallback: stuffs.fallback
+    fallback: stuffs.fallback,
   }
 }
 
 export async function getStaticProps({ params }: any) {
-  const res = await octokit.request(`GET /repos/okfnepal/climatedata/contents/Datasets/${params.category}/${params.dataset}?ref=master`)
-
+  // files are embedded in path params by getDatasetsPaths — no API call needed
   return {
     props: {
-      data: res,
-      query: params
+      data: { data: params.files ?? [] },
+      query: params,
     },
   }
 }

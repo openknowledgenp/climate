@@ -3,30 +3,32 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Layout from '../../../../components/Layout'
 import ResourcesNav from '../../../../components/ResourceNav'
-import { Octokit } from '@octokit/core'
 import { getDatasetsPaths } from '../../../../lib/github_rest'
 
-
-
-
-const octokit = new Octokit(process.env.NEXT_PUBLIC_PAT ? { auth: process.env.NEXT_PUBLIC_PAT } : {})
-
 export async function getStaticPaths() {
+    const allPaths = await getDatasetsPaths()
+    const catMap: { [k: string]: boolean } = {}
+    allPaths.paths.forEach((p: any) => { catMap[p.params.category] = true })
+    const categories = Object.keys(catMap)
     return {
-        paths: [],
-        fallback: 'blocking'
+        paths: categories.map(c => ({ params: { category: c } })),
+        fallback: false,
     }
 }
 
-
-export async function getStaticProps() {
-    const datasetPaths = await getDatasetsPaths()
-    const named = ['Temperature']
-    const res = await octokit.request(`GET /repos/okfnepal/climatedata/contents/Datasets/${named}?ref=master`)
+export async function getStaticProps({ params }: any) {
+    const allPaths = await getDatasetsPaths()
+    const datasets = allPaths.paths
+        .filter((p: any) => p.params.category === params.category)
+        .map((p: any) => ({
+            name: p.params.dataset,
+            path: `Datasets/${p.params.category}/${p.params.dataset}`,
+            html_url: p.params.data.html_url,
+        }))
     return {
         props: {
-            data: res,
-            datasets: datasetPaths.paths
+            data: { data: datasets },
+            datasets: allPaths.paths,
         },
     }
 }
